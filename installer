@@ -1,0 +1,72 @@
+-- ***************************************************************************
+-- kjlib installer
+--
+-- Author: knuckleheadJoe
+-- Date: 2014-09-21
+--
+-- Much of the code for this installer was copied from Kingdaro's craftbang
+-- source code. @see https://github.com/Kingdaro/CraftBang
+--
+-- ***************************************************************************
+
+local url = "https://raw.github.com/jmcaffee/kjlib/master/kjlib/"
+local files = {}
+local filelist = {
+    'device';
+    'display';
+    'listener';
+    'state';
+    'text';
+    'web';
+}
+
+local function clear()
+    term.clear()
+    term.setCursorPos(1,1)
+end
+
+clear()
+local errors = false
+for i=1, #filelist do
+    local filename = filelist[i]
+    local fullurl = url .. filename
+    local localpath = '/kjlib/'..filename
+
+    local download = http.get(fullurl)
+    if download then
+        print("Fetching "..filename)
+        files[localpath] = download.readAll()
+        download.close()
+    else
+        print("Couldn't get "..filename)
+        print "Installation failed."
+        return
+    end
+end
+sleep(1)
+
+local installed = false
+if fs.exists('/kjlib') then
+    clear()
+    installed = true
+
+    write "Overwrite current library installation? [Y/n] "
+    local input = read():lower():sub(1,1)
+    if input == 'n' then
+        print "Will not write files."
+        return
+    end
+    fs.delete('/kjlib')
+end
+
+clear()
+fs.makeDir('/kjlib')
+for path, content in pairs(files) do
+    print("Writing "..path)
+    local file = fs.open(path, 'w')
+    file.write(content)
+    file.close()
+end
+print "Installation complete!"
+sleep(1)
+

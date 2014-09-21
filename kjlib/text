@@ -1,0 +1,44 @@
+
+function pp(obj)
+    print(textutils.serialize(obj))
+end
+
+-- Pretty print table
+function ppt(tbl)
+    for k,v in pairs(tbl) do
+        print(k, v)
+    end
+end
+
+-- Pretty print table keys
+function pptk(tbl)
+    for k,v in pairs(tbl) do
+        print(k)
+    end
+end
+
+function printHdr(hdr)
+    local hr = string.rep('-', string.len(hdr))
+    print()
+    print(hdr)
+    print(hr .. "\n")
+end
+
+function leftJustify(str, len)
+    local out = str
+    while string.len(out) < len do
+        out = out .. ' '
+    end
+
+    return out
+end
+
+function rightJustify(str, len)
+    local out = str
+    while string.len(out) < len do
+        out = ' ' .. out
+    end
+
+    return out
+end
+

@@ -1,0 +1,26 @@
+os.loadAPI("bmon/device")
+
+local channel
+local modem
+
+local function getModem()
+    if not modem then
+        modem = device.getDevice('modem')
+    end
+
+    return modem
+end
+
+function onKeyEvent()
+    local event, key = os.pullEvent("char")
+
+    --print("char event received: "..key)
+
+    return key
+end
+
+function onModemEvent()
+    local event, side, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
+    return side, senderChannel, replyChannel, message, senderDistance
+end
+

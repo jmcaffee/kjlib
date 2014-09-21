@@ -1,0 +1,28 @@
+
+function getModem()
+    return getDevice('modem')
+end
+
+function getChest()
+    return getDevice('container_chest')
+end
+
+function getDevice(devName)
+    local sides = peripheral.getNames()
+    local dev
+
+    for _, side in pairs(sides) do
+        local perType = peripheral.getType(side)
+
+        if perType == devName then
+            dev = peripheral.wrap(side)
+        end
+    end
+
+    if not dev then
+        print(devName .. " not attached.")
+    end
+
+    return dev
+end
+

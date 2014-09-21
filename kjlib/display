@@ -1,0 +1,77 @@
+os.loadAPI("bmon/text")
+os.loadAPI("bmon/device")
+
+local mon
+local textScale = 1
+
+local function getMonitor()
+    if not mon then
+        print('creating monitor')
+        mon = device.getDevice('monitor')
+    end
+
+    return mon
+end
+
+local function showtext(txt)
+    local m = getMonitor()
+    local x, y = m.getCursorPos()
+
+    print('x: '..x..' y: '..y)
+    print(txt)
+
+    m.setCursorPos(1, 1)
+    m.clearLine()
+    m.write(txt)
+end
+
+local function printStats(stats)
+    stats = textutils.unserialize(stats)
+
+    print("Sender:    "..stats.id)
+    print("Status:    "..stats.status)
+    print("Fuel:      "..stats.fuelLevel)
+    print("Inventory: "..stats.invLevel)
+    print("Mined:     "..stats.totalMined)
+end
+
+function scaleTextUp()
+    textScale = textScale + 0.5
+    if (textScale > 5) then
+        textScale = 5
+    end
+
+    getMonitor().setTextScale(textScale)
+    print('text scale: '..textScale)
+end
+
+function scaleTextDown()
+    textScale = textScale - 0.5
+    if (textScale < 0.5) then
+        textScale = 0.5
+    end
+
+    getMonitor().setTextScale(textScale)
+    print('text scale: '..textScale)
+end
+
+function turtleStatus(stats)
+    local m = getMonitor()
+    m.clear()
+
+    for k,v in pairs(stats) do print(k.." "..v) end
+
+    local lines = {
+        text.rightJustify('ID:', 10).." "..stats.id,
+        text.rightJustify('Status:', 10).." "..stats.status,
+        text.rightJustify('Fuel:', 10).." "..stats.fuelLevel,
+        text.rightJustify('Inventory:', 10).." "..stats.invLevel,
+        text.rightJustify('Mined:', 10).." "..stats.totalMined
+    }
+
+    for y, text in ipairs(lines) do
+        m.setCursorPos(1, y)
+        m.write(text)
+    end
+end
+

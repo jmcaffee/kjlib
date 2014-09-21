@@ -1,0 +1,20 @@
+
+function newTurtleStatus(turtleId, turtleStatus, turtleFuelLevel, turtleInventoryLevel, turtleTotalMined)
+    -- Set some defaults
+    turtleId = turtleId or 'UNKNOWN'
+    turtleStatus = turtleStatus or 'IDLE'
+    turtleFuelLevel = turtleFuelLevel or 0
+    turtleInvLevel = turtleInvLevel or 0
+    turtleTotalMined = turtleTotalMined or 0
+
+    local stats = {
+        id = turtleId,
+        status = turtleStatus,
+        fuelLevel = turtleFuelLevel,
+        invLevel  = turtleInvLevel,
+        totalMined = turtleTotalMined
+    }
+
+    return stats
+end
+
