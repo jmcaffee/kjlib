@@ -1,4 +1,4 @@
-os.loadAPI("bmon/device")
+os.loadAPI("/kjlib/device")
 
 local channel
 local modem

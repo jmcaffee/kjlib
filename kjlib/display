@@ -1,5 +1,5 @@
-os.loadAPI("bmon/text")
-os.loadAPI("bmon/device")
+os.loadAPI("/kjlib/text")
+os.loadAPI("/kjlib/device")
 
 local mon
 local textScale = 1
@@ -76,6 +76,6 @@ function turtleStatus(stats)
 end
 
 function prnt(txt)
-    print txt
+    print(txt)
 end
 
