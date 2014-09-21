@@ -75,3 +75,7 @@ function turtleStatus(stats)
     end
 end
 
+function prnt(txt)
+    print txt
+end
+
