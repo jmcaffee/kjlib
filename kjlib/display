@@ -26,7 +26,7 @@ local function showtext(txt)
 end
 
 local function printStats(stats)
-    stats = textutils.unserialize(stats)
+    -- Tables passed to this function must already be unserialized.
 
     print("Sender:    "..stats.id)
     print("Status:    "..stats.status)
@@ -58,8 +58,6 @@ end
 function turtleStatus(stats)
     local m = getMonitor()
     m.clear()
-
-    for k,v in pairs(stats) do print(k.." "..v) end
 
     local lines = {
         text.rightJustify('ID:', 10).." "..stats.id,
