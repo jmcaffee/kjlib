@@ -1,0 +1,217 @@
+
+mon = {}
+modem = {}
+chest = {}
+basicPipe = {}
+
+function connectPeripherals(verbose)
+    verbose = verbose or false
+
+    local sides = peripheral.getNames()
+
+    for _, side in pairs(sides) do
+        -- print("probing " .. side .. " side")
+
+        local perType = peripheral.getType(side)
+
+        if perType == "modem" then
+            modem = peripheral.wrap(side)
+            if verbose then
+                print("modem connected: " .. side)
+            end
+        elseif perType == "monitor" then
+            mon = peripheral.wrap(side)
+            if verbose then
+                print("monitor connected: " .. side)
+            end
+        elseif perType == "container_chest" then
+            chest = peripheral.wrap(side)
+            if verbose then
+                print("chest connected: " .. side)
+            end
+        elseif perType == "logisticspipes_pipes_basic_logisticstilegenericpipe" then
+            basicPipe = peripheral.wrap(side)
+            if verbose then
+                print("basic LP pipe connected: " .. side)
+            end
+        else
+            print("[", side, "] unknown type: ", perType)
+        end
+    end
+end
+
+function pp(obj)
+    print(textutils.serialize(obj))
+end
+
+-- Pretty print table
+function ppt(tbl)
+    for k,v in pairs(tbl) do
+        print(k, ": ", v)
+    end
+end
+
+-- Pretty print table keys
+function pptk(tbl)
+    for k,v in pairs(tbl) do
+        print(k)
+    end
+end
+
+function getModem()
+    return getDevice('modem')
+end
+
+function getChest()
+    return getDevice('container_chest')
+end
+
+function getDevice(devName)
+    local sides = peripheral.getNames()
+    local dev
+
+    if devName == "lp_basic_pipe" then
+        devName = "logisticspipes_pipes_basic_logisticstilegenericpipe"
+    elseif devName == "chest" then
+        devName = "container_chest"
+    end
+
+    for _, side in pairs(sides) do
+        local perType = peripheral.getType(side)
+
+        if perType == devName then
+            dev = peripheral.wrap(side)
+        end
+    end
+
+    if not dev then
+        print(devName .. " not attached.")
+    end
+
+    return dev
+end
+
+function listAttached()
+    local sides = peripheral.getNames()
+
+    printHdr(" Attached Devices ")
+
+    for _, side in pairs(sides) do
+        local perType = peripheral.getType(side)
+        print(rightJustify(side, 8) .. ': ' .. perType)
+    end
+
+    if #sides < 1 then
+        print("No devices attached")
+    end
+
+    print()
+end
+
+-- Dump device methods to console
+function dumpMethods(devName)
+    local dev = getDevice(devName)
+    if dev == nil then
+        return
+    end
+
+    for meth, infoTbl in pairs(dev.getAdvancedMethodsData()) do
+        local desc = infoTbl["description"]
+        print(meth)
+    end
+end
+
+-- Dump methods and info about an attached device to a file
+function dumpInfoToFile(devName, filename)
+    local dev = getDevice(devName)
+    if dev == nil then
+        return
+    end
+
+    local fh = fs.open(filename, "w")
+
+    for meth, infoTbl in pairs(dev.getAdvancedMethodsData()) do
+        local desc = infoTbl["description"]
+        fh.writeLine(meth .. ":")
+        fh.writeLine("  desc: " .. desc)
+        fh.writeLine()
+        fh.writeLine("  args: ")
+        for _, v in pairs(infoTbl["args"]) do
+            fh.writeLine("    name: " .. v["name"])
+            fh.writeLine("    type: " .. v["type"])
+            fh.writeLine("    desc: " .. v["description"])
+            fh.writeLine("    optional: " .. tostring(v["optional"]))
+            fh.writeLine("    nullable: " .. tostring(v["nullable"]))
+            fh.writeLine("    vararg:   " .. tostring(v["vararg"]))
+            fh.writeLine()
+        end
+        fh.writeLine()
+        fh.writeLine("  returns: ")
+        for _, rt in pairs(infoTbl["returnTypes"]) do
+            fh.writeLine("    " .. rt)
+        end
+        fh.writeLine()
+        fh.writeLine("--------------------")
+        fh.writeLine()
+    end
+
+    fh.close()
+end
+
+-- Dump methods and info about an attached device
+function dumpInfo(devName)
+    local dev = getDevice(devName)
+    if dev == nil then
+        return
+    end
+
+    for meth, infoTbl in pairs(dev.getAdvancedMethodsData()) do
+        --ppt(infoTbl)
+        local desc = infoTbl["description"]
+        print(meth, ":")
+        print("  desc: ", desc)
+        print()
+        print("  args: ")
+        for _, v in pairs(infoTbl["args"]) do
+            print("    name: ", v["name"])
+            print("    type: ", v["type"])
+            print("    desc: ", v["description"])
+            print("    optional: ", v["optional"])
+            print("    nullable: ", v["nullable"])
+            print("    vararg:   ", v["vararg"])
+            print()
+        end
+        print()
+        print("  returns: ")
+        for _, rt in pairs(infoTbl["returnTypes"]) do
+            print("    ", rt)
+        end
+        print()
+    end
+end
+
+function printHdr(hdr)
+    local hr = string.rep('-', string.len(hdr))
+    print()
+    print(hdr)
+    print(hr .. "\n")
+end
+
+function leftJustify(str, len)
+    local out = str
+    while string.len(out) < len do
+        out = out .. ' '
+    end
+
+    return out
+end
+
+function rightJustify(str, len)
+    local out = str
+    while string.len(out) < len do
+        out = ' ' .. out
+    end
+
+    return out
+end
+

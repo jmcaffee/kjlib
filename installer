@@ -13,6 +13,7 @@ local url = "https://raw.github.com/jmcaffee/kjlib/master/kjlib/"
 local files = {}
 local filelist = {
     'device';
+    'devprobe';
     'display';
     'listener';
     'state';
