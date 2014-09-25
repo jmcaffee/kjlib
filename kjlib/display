@@ -26,13 +26,15 @@ local function showtext(txt)
 end
 
 local function printStats(stats)
-    -- Tables passed to this function must already be unserialized.
+    -- Tables passed to this function must be unserialized.
 
-    print("Sender:    "..stats.id)
-    print("Status:    "..stats.status)
-    print("Fuel:      "..stats.fuelLevel)
-    print("Inventory: "..stats.invLevel)
-    print("Mined:     "..stats.totalMined)
+    print("Sender:        "..stats.id)
+    print("Status:        "..stats.status)
+    print("Fuel:          "..stats.fuelLevel)
+    print("Inventory:     "..stats.invLevel)
+    print("Mined:         "..stats.totalMined)
+    print("Level:         "..stats.mineLevel)
+    print("Chests Looted: "..stats.chestsLooted)
 end
 
 function scaleTextUp()
@@ -62,9 +64,11 @@ function turtleStatus(stats)
     local lines = {
         text.rightJustify('ID:', 10).." "..stats.id,
         text.rightJustify('Status:', 10).." "..stats.status,
+        text.rightJustify('Level:', 10).." "..stats.mineLevel
         text.rightJustify('Fuel:', 10).." "..stats.fuelLevel,
         text.rightJustify('Inventory:', 10).." "..stats.invLevel,
         text.rightJustify('Mined:', 10).." "..stats.totalMined
+        text.rightJustify('Looted:', 10).." "..stats.chestsLooted
     }
 
     for y, text in ipairs(lines) do

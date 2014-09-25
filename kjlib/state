@@ -1,11 +1,13 @@
 
-function newTurtleStatus(turtleId, turtleStatus, turtleFuelLevel, turtleInventoryLevel, turtleTotalMined)
+function newTurtleStatus(turtleId, turtleStatus, turtleFuelLevel, turtleInventoryLevel, turtleTotalMined, turtleMiningLevel, turtleChestsLooted)
     -- Set some defaults
     turtleId = turtleId or 'UNKNOWN'
     turtleStatus = turtleStatus or 'IDLE'
     turtleFuelLevel = turtleFuelLevel or 0
     turtleInvLevel = turtleInvLevel or 0
     turtleTotalMined = turtleTotalMined or 0
+    turtleMiningLevel = turtleMiningLevel or 0
+    turtleChestsLooted = turtleChestsLooted or 0
 
     local stats = {
         id = turtleId,
@@ -13,6 +15,8 @@ function newTurtleStatus(turtleId, turtleStatus, turtleFuelLevel, turtleInventor
         fuelLevel = turtleFuelLevel,
         invLevel  = turtleInvLevel,
         totalMined = turtleTotalMined
+        mineLevel = turtleMiningLevel
+        chestsLooted = turtleChestsLooted
     }
 
     return stats
