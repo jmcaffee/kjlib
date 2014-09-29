@@ -10,13 +10,13 @@ function newTurtleStatus(turtleId, turtleStatus, turtleFuelLevel, turtleInventor
     turtleChestsLooted = turtleChestsLooted or 0
 
     local stats = {
-        id = turtleId,
-        status = turtleStatus,
-        fuelLevel = turtleFuelLevel,
-        invLevel  = turtleInvLevel,
-        totalMined = turtleTotalMined
-        mineLevel = turtleMiningLevel
-        chestsLooted = turtleChestsLooted
+        id = turtleId;
+        status = turtleStatus;
+        fuelLevel = turtleFuelLevel;
+        invLevel  = turtleInvLevel;
+        totalMined = turtleTotalMined;
+        mineLevel = turtleMiningLevel;
+        chestsLooted = turtleChestsLooted;
     }
 
     return stats
