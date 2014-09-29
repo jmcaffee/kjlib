@@ -64,10 +64,10 @@ function turtleStatus(stats)
     local lines = {
         text.rightJustify('ID:', 10).." "..stats.id,
         text.rightJustify('Status:', 10).." "..stats.status,
-        text.rightJustify('Level:', 10).." "..stats.mineLevel
+        text.rightJustify('Level:', 10).." "..stats.mineLevel,
         text.rightJustify('Fuel:', 10).." "..stats.fuelLevel,
         text.rightJustify('Inventory:', 10).." "..stats.invLevel,
-        text.rightJustify('Mined:', 10).." "..stats.totalMined
+        text.rightJustify('Mined:', 10).." "..stats.totalMined,
         text.rightJustify('Looted:', 10).." "..stats.chestsLooted
     }
 
